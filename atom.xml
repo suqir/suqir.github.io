@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.suqir.xyz/"/>
-  <updated>2020-09-10T01:39:48.414Z</updated>
+  <updated>2020-11-10T01:10:13.990Z</updated>
   <id>https://blog.suqir.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gradle中api与implementation的区别</title>
+    <link href="https://blog.suqir.xyz/2020/11/09/gradle%E4%B8%ADapi%E4%B8%8Eimplementation%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>https://blog.suqir.xyz/2020/11/09/gradle%E4%B8%ADapi%E4%B8%8Eimplementation%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2020-11-09T12:23:53.000Z</published>
+    <updated>2020-11-10T01:10:13.990Z</updated>
+    
+    <content type="html"><![CDATA[<p>在gradle3.0版本中，compile 指令被标注为过时的方法，新增了两个依赖指令：implement 和api，这两个都可以进行依赖添加，它们有什么区别呢</p><a id="more"></a><p>最近在进行安卓模块化开发时遇到了这个问题：项目中有3个模块<code>app</code>、<code>libA</code>、<code>libB</code>，它们之间的依赖关系是<code>app</code>依赖<code>libA</code>，<code>libA</code>依赖<code>libB</code>。这时要在<code>app</code>模块中使用到<code>libB</code>中的第三方库资源，在<code>gradle3.0</code>之前，我们可以用<code>compile</code>进行配置，这没有任何问题。但是在3.0版本之后，<code>compile</code>指令被标注为过时方法，这时怎么配置才能让<code>app</code>模块能使用<code>libB</code>模块中的库呢？</p><p>在3.0版本中，<code>compile</code>指令被标注为过时的方法，而是用新增的两个依赖指令：<code>implement</code>和<code>api</code>来代替它，这两个都可以进行依赖添加，我们先看看它们之间的区别，官方文档是这样说的：</p><p><img src="/2020/11/09/gradle中api与implementation的区别/compile.png" alt="api和implement"></p><h1 id="api"><a href="#api" class="headerlink" title="api"></a><code>api</code></h1><p>它的作用与原来的<code>compile</code>指令完全一样，当<code>app api libA</code>时，在<code>app</code>模块中可以直接使用<code>libA</code>模块中的库资源</p><h1 id="implement"><a href="#implement" class="headerlink" title="implement"></a><code>implement</code></h1><p>使用了该命令编译的依赖，对该项目有依赖的项目将无法访问到使用该命令编译的依赖中的任何程序，也就是将该依赖隐藏在内部，而不对外部公开</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>所以，在<code>gradle</code>升级到3.0之后如果要解决开头的配置问题，只需要让<code>app implement libA</code>，<code>libA api libB</code>。如果<code>libB</code>中有库需要暴露给其他模块使用，则需要使用<code>implement</code>对相应的库进行配置</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在gradle3.0版本中，compile 指令被标注为过时的方法，新增了两个依赖指令：implement 和api，这两个都可以进行依赖添加，它们有什么区别呢&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Android开发" scheme="https://blog.suqir.xyz/categories/Android%E5%BC%80%E5%8F%91/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>使用Flask进行RESTful API接口开发</title>
